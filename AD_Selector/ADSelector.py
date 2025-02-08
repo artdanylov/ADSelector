@@ -37,9 +37,7 @@ def ADSelectorUI(*args):
         if not selection:
             cmds.warning("No selection made.")
             return
-        name = selection[0]
-        name = name.replace(":","")
-        name = uniqueName(name)
+        name = uniqueName(selection[0])
         btn = cmds.button(
                 parent=flow,
                 height=40,
@@ -359,13 +357,13 @@ def LoadJson(LoadAs="False"):
                 ImportOrder=newOrder
                 if currentOrder:
                     if ImportOrder in OrderList:
-                        ImportOrder=newOrder.replace(Import,Import+"NEW")
+                        ImportOrder=newOrder.replace(Import,Import+"1")
                     
         members=cmds.sets(MainSetName,q=1)
         if members:
             for member in members:
                 if Import in member:
-                    ImportMember=member.replace(Import,Import+"NEW")
+                    ImportMember=member.replace(Import,Import+"1")
         if not members:
             ImportMember="ADS_" + Import
 
@@ -386,16 +384,14 @@ def LoadJson(LoadAs="False"):
 def get_colors():
     return {
         'Default': (0.363, 0.363, 0.363),
-        'Pink': (0.996, 0.776, 0.776),
-        'Blue': (0.678, 0.847, 0.902),
+        'Red': (0.980, 0.502, 0.447),
         'Green': (0.776, 0.937, 0.808),
+        'Blue': (0.678, 0.847, 0.902),
+        'Yellow': (1.000, 0.957, 0.702),
         'Lavender': (0.859, 0.788, 0.937),
         'Peach': (1.000, 0.855, 0.725),
-        'LightBlue': (0.804, 0.871, 0.996),
-        'Yellow': (1.000, 0.957, 0.702),
-        'Coral': (0.941, 0.722, 0.725),
-        'Seafoam': (0.725, 0.941, 0.871),
-        'Purple': (0.914, 0.808, 0.922)
+        'Pink': (0.996, 0.776, 0.776),
+        'Seafoam': (0.725, 0.941, 0.871)
     }
     
 def colorToValue(colorName):
@@ -449,11 +445,14 @@ def SetNameToBtn(setName):
     return setName.split('ADS_')[1]
 
 def uniqueName(name):
+    if ":" in name:
+        name=name.split(":")[1]
+    name=name.replace("|","_")
     existing_buttons = cmds.layout(flowLayout, q=True, childArray=True) or []
     for btn in existing_buttons:
         ExistName=cmds.button(btn, q=1, label=1)
         if name == ExistName:
-            name=name + "NEW"
+            name=name + "1"
     return name
 
 def CreateSet(btn, selection):
@@ -480,6 +479,7 @@ def Rename(btn):
     if result == 'OK':
         old_name = BtnName(btn)
         new_name = cmds.promptDialog(query=True, text=True)
+        new_name = uniqueName(new_name)
         cmds.button(btn, edit=True, label=new_name, command=lambda x, n=new_name: SelectAction(n))
         cmds.rename('ADS_' + old_name, 'ADS_' + new_name)
 
