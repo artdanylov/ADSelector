@@ -20,4 +20,3 @@ ads.initialize()
 ## Requirements
 
 - Autodesk Maya 2024
-- Python 3.x
