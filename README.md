@@ -1,6 +1,13 @@
 # AD_Selector
 <img src="screenshots/ads_1.png" width="1200" alt="Description">
 Maya 2024 Selector / Picker script based on selection sets
+- minimalistic design
+- dockable UI
+- export/import to file
+- quick export/import to quickly move sets across maya windows
+- recolor, change btns order, rename
+- shift click adds to current selection, cntrl click removes from current selection
+
 
 ## Installation
 
