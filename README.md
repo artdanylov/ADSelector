@@ -1,5 +1,5 @@
 # AD_Selector
-
+<img src="screenshots/ads_1.png" width="500" alt="Description">
 Maya 2024 Selector / Picker script based on selection sets
 
 ## Installation
