@@ -1,3 +1,4 @@
+from cProfile import label
 import os
 from tabnanny import check
 import maya.cmds as cmds
@@ -29,6 +30,7 @@ def ADSelectorUI(*args):
             return
         name = selection[0]
         name = name.replace(":","")
+        name = uniqueName(name)
         btn = cmds.button(
                 parent=flow,
                 height=40,
@@ -427,8 +429,6 @@ def MainSet():
     if not cmds.objExists(MainSetName):
         MainSet=cmds.sets(name=MainSetName, empty=True)
         cmds.addAttr(MainSet, longName=BtnOrderAttr, dataType='string')
-    if cmds.objExists(MainSetName):
-        print("exist")
     return MainSetName, BtnOrderAttr
 
 def BtnName(btn):
@@ -438,7 +438,15 @@ def BtnToSetName(btn):
     return f"ADS_{BtnName(btn)}"
 def SetNameToBtn(setName):
     return setName.split('ADS_')[1]
-    
+
+def uniqueName(name):
+    existing_buttons = cmds.layout(flowLayout, q=True, childArray=True) or []
+    for btn in existing_buttons:
+        ExistName=cmds.button(btn, q=1, label=1)
+        if name == ExistName:
+            name=name + "NEW"
+    return name
+
 def CreateSet(btn, selection):
     MainSetName,BtnOrderAttr = MainSet()
     btnSet = cmds.sets(name=BtnToSetName(btn), empty=True)
@@ -476,6 +484,7 @@ def Rename(btn):
                 OrderList[0] = OrderList[0].replace(old_name, new_name)
                 newOrder = ','.join(OrderList)
                 cmds.setAttr(f'{MainSetName}.{BtnOrderAttr}', newOrder, type='string')
+                refreshUI()
                 return   
         for i, element in enumerate(OrderList):
             if old_name in element:
@@ -483,9 +492,8 @@ def Rename(btn):
                 OrderList[i] = element.replace(old_name, new_name)
         newOrder = ','.join(OrderList)
         cmds.setAttr(f'{MainSetName}.{BtnOrderAttr}', newOrder, type='string')
-        
+        refreshUI()
         return
-    refreshUI()
     return None    
 
 def AddFromSelection(btn):
