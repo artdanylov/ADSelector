@@ -1,8 +1,23 @@
 # AD_Selector
+
 Maya 2024 Selector / Picker script based on selection sets
-Copy folder AD_Selecotor to maya scripts
-To run use python command:
+
+## Installation
+
+1. Copy the `AD_Selector` folder to your Maya scripts directory
+
+## Usage
+
+Launch the tool in Maya using the following Python commands:
+
+```python
 import AD_Selector.ADSelector as ads
 import importlib
 importlib.reload(ads)
 ads.initialize()
+```
+
+## Requirements
+
+- Autodesk Maya 2024
+- Python 3.x
