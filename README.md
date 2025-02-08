@@ -1,13 +1,20 @@
 # AD_Selector
 <img src="screenshots/ads_1.png" width="1200" alt="Description">
 Maya 2024 Selector / Picker script based on selection sets
-- minimalistic design
-- dockable UI
-- export/import to file
-- quick export/import to quickly move sets across maya windows
-- recolor, change btns order, rename
-- shift click adds to current selection, cntrl click removes from current selection
 
+## Features
+
+- **Minimalistic Design**: Clean and efficient user interface
+- **Dockable UI**: Fully dockable window that integrates with Maya's interface
+- **Smart Selection**:
+  - Regular click: Select objects
+  - Shift click: Add to current selection
+  - Ctrl click: Remove from current selection
+- **Btn Management**:
+  - Export/Import to file
+  - Quick export/import to move btns between Maya windows
+  - Customize button colors
+  - Reorder buttons
 
 ## Installation
 
