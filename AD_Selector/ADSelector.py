@@ -6,13 +6,22 @@ import maya.mel as mel
 import json
 from typing import Optional, Dict, List
 
+
 def initialize():
-    workspace = "ADSelector_WorkspaceControl"
-    
+    workspace = "ADSelector_WorkspaceControl"   
     if cmds.workspaceControl(workspace, exists=True):
         cmds.deleteUI(workspace, control=True)
     
     showUI()
+
+    cmds.scriptJob(
+        event=["SceneOpened", "import AD_Selector.ADSelector as ads; ads.refreshUI()"],
+        protected=True
+    )
+    cmds.scriptJob(
+        event=["NewSceneOpened", "import AD_Selector.ADSelector as ads; ads.refreshUI()"],
+        protected=True
+    )
 
     cmds.workspaceControl(
         workspace,
