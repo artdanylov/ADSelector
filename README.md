@@ -18,8 +18,11 @@ Maya 2024 Selector / Picker script based on selection sets
 
 ## Installation
 
-Copy the `AD_Selector` folder to your Maya documents scripts directory
-
+Copy the `AD_Selector` folder to your Maya scripts directory
+   ```
+   C:\Users\UserName\Documents\maya\2024\scripts
+   ```
+   Note: Replace "UserName" with your Windows username
 ## Usage
 
 Launch the tool in Maya using the following Python commands:
