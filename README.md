@@ -4,7 +4,7 @@ Maya 2024 Selector / Picker script based on selection sets
 
 ## Installation
 
-1. Copy the `AD_Selector` folder to your Maya scripts directory
+Copy the `AD_Selector` folder to your Maya documents scripts directory
 
 ## Usage
 
