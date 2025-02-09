@@ -1,6 +1,11 @@
 # AD_Selector v0.1
 <img src="screenshots/ads_1.png" width="1200" alt="Description">
-Maya 2024 Selector / Picker script based on selection sets
+
+
+## Maya 2024 Selector / Picker 
+
+
+Main picker idea is to controls native maya selection sets with minimal and effective UI without creating any extra nodes in scenes. So all your selections always stored in scene file under ADSelectorData and can be used anytime without loading any extra data.
 
 ## Features
 
