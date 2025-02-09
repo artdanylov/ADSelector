@@ -14,14 +14,8 @@ def initialize():
     
     showUI()
 
-    cmds.scriptJob(
-        event=["SceneOpened", "import AD_Selector.ADSelector as ads; ads.refreshUI()"],
-        protected=True
-    )
-    cmds.scriptJob(
-        event=["NewSceneOpened", "import AD_Selector.ADSelector as ads; ads.refreshUI()"],
-        protected=True
-    )
+    cmds.scriptJob(event=["SceneOpened", "import AD_Selector.ADSelector as ads; ads.refreshUI()"], protected=True)
+    #cmds.scriptJob(event=["NewSceneOpened", "import AD_Selector.ADSelector as ads; ads.refreshUI()"], protected=True)
 
     cmds.workspaceControl(
         workspace,
@@ -105,32 +99,25 @@ def showUI():
 def refreshUI():
     existing_buttons = cmds.layout(flowLayout, q=True, childArray=True) or []
     for btn in existing_buttons:
-        try:
-            cmds.button(btn, edit=True, visible=False)
-            cmds.deleteUI(btn)
-        except:
-            continue
+        cmds.button(btn, edit=True, visible=False)
+        #cmds.deleteUI(btn)
     MainSetName, BtnOrderAttr = MainSet()
     BtnOrderAttrString = cmds.getAttr(f'{MainSetName}.{BtnOrderAttr}')
     if BtnOrderAttrString:
         BtnList = BtnOrderAttrString.split(',')
         for Btn in BtnList:
-            if not Btn:
-                continue
-            try:
-                BtnName = name = Btn.split('_(')[0]
-                BtnColor = Btn.split('_(')[1].split(')')[0]
-                btn = cmds.button(
-                    parent=flowLayout,
-                    height=40,
-                    recomputeSize=1,
-                    label=name,
-                    backgroundColor=colorToValue(BtnColor),
-                    command=lambda x, n=name: SelectAction(n),
-                )
-                PopupMenuBtn(btn)
-            except:
-                continue
+            BtnName = name = Btn.split('_(')[0]
+            BtnColor = Btn.split('_(')[1].split(')')[0]
+            btn = cmds.button(
+                parent=flowLayout,
+                height=40,
+                recomputeSize=1,
+                label=name,
+                backgroundColor=colorToValue(BtnColor),
+                command=lambda x, n=name: SelectAction(n),
+            )
+            PopupMenuBtn(btn)
+
 
 
 
@@ -478,7 +465,12 @@ def Rename(btn):
    
     if result == 'OK':
         old_name = BtnName(btn)
+        existing_buttons = cmds.layout(flowLayout, q=True, childArray=True) or []
         new_name = cmds.promptDialog(query=True, text=True)
+        for btn in existing_buttons:
+            ExistName=cmds.button(btn, q=1, label=1)
+            if new_name == ExistName:
+                new_name=new_name + "1"
         new_name = uniqueName(new_name)
         cmds.button(btn, edit=True, label=new_name, command=lambda x, n=new_name: SelectAction(n))
         cmds.rename('ADS_' + old_name, 'ADS_' + new_name)
@@ -493,7 +485,6 @@ def Rename(btn):
                 OrderList[0] = OrderList[0].replace(old_name, new_name)
                 newOrder = ','.join(OrderList)
                 cmds.setAttr(f'{MainSetName}.{BtnOrderAttr}', newOrder, type='string')
-                refreshUI()
                 return   
         for i, element in enumerate(OrderList):
             if old_name in element:
