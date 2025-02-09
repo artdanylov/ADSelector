@@ -608,22 +608,26 @@ def SelectAction(name,*args):
             
     
 def deleteAction(btn):
+    btnName=cmds.button(btn,q=1,l=1)
     cmds.button(btn,e=1,visible=0)
-    cmds.delete(BtnToSetName(btn)) 
+    if cmds.objExists(BtnToSetName(btn)):
+        cmds.delete(BtnToSetName(btn)) 
     MainSetName,BtnOrderAttr = MainSet()
     currentOrder = cmds.getAttr(f'{MainSetName}.{BtnOrderAttr}')
+    print(currentOrder)
     if not currentOrder: return
     OrderList = currentOrder.split(',') if ',' in currentOrder else [currentOrder]
+    print(OrderList)
     if len(OrderList) == 1:
-        if BtnName(btn) in OrderList[0]:
-            cmds.setAttr(f'{MainSetName}.{BtnOrderAttr}', '', type='string')
+        cmds.setAttr(f'{MainSetName}.{BtnOrderAttr}', '', type='string')
         return    
     for i, element in enumerate(OrderList):
-        if BtnName(btn) in element:
-            BtnToRemove = element + ','
-            OrderList[i] = element.replace(BtnToRemove,'')     
+        if btnName in element:
+            OrderList.pop(i)
+            break
     newOrder = ','.join(OrderList)
-    cmds.setAttr(f'{MainSetName}.{BtnOrderAttr}', newOrder, type='string')     
+    cmds.setAttr(f'{MainSetName}.{BtnOrderAttr}', newOrder, type='string')
+
 
 def deleteControl(control):
     if cmds.workspaceControl(control, q=True, exists=True):
